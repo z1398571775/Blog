@@ -8,7 +8,6 @@ class BlogApplicationTests {
 
 	@Test
 	void contextLoads() {
-		//去恶趣味
 	}
 
 }
