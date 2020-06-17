@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>个人博客</title>
+		<link rel="icon" href="img/bitbug_favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="img/bitbug_favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+		<script type="text/javascript" src="js/popper.js"></script>
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		</head>
+	<body>
+		<!-- 导航栏 -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+			<img src="img/80024330_p0_master1200.jpg" width="40px" height="40px" />
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+			 aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+					</li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" type="search" placeholder="Search">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+		</nav>
+		
+		<div class="bodyImage">
+			<div class="container">
+				<div class="row" th:each="article : ${articles}">
+					<div class="col-8" style="">
+						<div style="background-color: #F7F7F7;margin-top: 50px;padding-top: 10px;">
+							<h4 align="center" style="">
+								<a th:text="${article.title}" th:href="@{/content/(id=${article.id})}">这是我的第一篇文章</a>
+							</h4>
+							<div class="card" style="width: 100%;background-color:transparent;" >
+							  <img src="img/80820149_p0_master1200.jpg" height="400px" class="card-img-top rounded-circle" alt="...">
+							  <div class="card-body">
+							    <p th:text="${article.introduce}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							  </div>
+							</div>
+						</div>
+						<div style="background-color: #F7F7F7;margin-top: 50px;padding-top: 10px;">
+							<h4 align="center" style="">
+								<a href="#">这是我的第一篇文章</a>
+							</h4>
+							<div class="card" style="width: 100%;">
+							  <img src="img/80820149_p0_master1200.jpg" class="card-img-top" alt="...">
+							  <div class="card-body">
+							    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							  </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-1"></div>
+					<div class="col-3"></div>
+					<div  style="margin-top: 95px;background-color:rgba(220,38,38,0.2);position: fixed;margin-left: 70%;">
+						2
+						<div style="width: 50px;height: 50px;">3</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="jumbotron text-center" style="margin-bottom:0">
+		  <p>底部内容</p>
+		</div>
+		<script type="text/javascript" src="js/dist/canvas-nest.js"></script>
+	</body>
+
+</html>

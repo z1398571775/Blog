@@ -1,0 +1,7 @@
+.bodyImage{
+	background-image:url(../img/75792708_p0_master1200.jpg) ;
+	background-size: 100% 800px ;
+	background-repeat: no-repeat;
+	background-attachment:fixed;
+}
+html,body{margin:0;padding:0}
