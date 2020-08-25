@@ -8,6 +8,7 @@ class BlogApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//十分谨慎的回复
 	}
 
 }

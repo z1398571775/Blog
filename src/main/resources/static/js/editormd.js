@@ -107,8 +107,8 @@
         placeholder          : "Enjoy Markdown! coding now...",
         gotoLine             : true,
         codeFold             : false,
-        autoHeight           : false,
-		autoFocus            : true,
+        autoHeight           : true,
+		autoFocus            : false,
         autoCloseTags        : true,
         searchReplace        : true,
         syncScrolling        : true,           // true | false | "single", default true

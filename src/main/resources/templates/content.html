@@ -3,8 +3,11 @@
 <head>
 <meta charset="utf-8">
 <title>文章内容</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="/css/editormd.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}" />
+<link rel="stylesheet" type="text/css" href="/css/editormd.css"
+	th:href="@{/css/editormd.css}">
 <link rel="icon" href="img/bitbug_favicon.ico" type="image/x-icon"
 	th:href="@{/img/bitbug_favicon.ico}">
 <link rel="shortcut icon" href="img/bitbug_favicon.ico"
@@ -33,7 +36,7 @@
 
 		<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
+				<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
@@ -51,16 +54,26 @@
 		<div class="container" style="width: 100%;">
 			<h3 align="center" th:text="${article.title}">这是一个文章题目</h3>
 			<div id="test-editormd-view2" class="bg-light ">
-				<textarea id="append-test" style="display: none;" th:text="${article.content}">
+				<textarea id="append-test" style="display: none;"
+					th:text="${article.content}">
                 </textarea>
 			</div>
-		</div>
-		<div class="container" style="width: 100%;">
-			
-		</div>
 
+			<div class="border" style="background-color: #f8f9fa;">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text"> 昵 称 </span>
+					</div>
+					<input type="text" class="form-control" placeholder="Username"
+						id="usr" name="username" width="20px">
+				</div>
+				<div id="commentText">
+					<textarea id ="comment" name = "text" style="display: none;"></textarea>
+				</div>
+			</div>
+		</div>
 	</div>
-	<script src="/js/jquery.min.js"></script>
+	<!-- <script src="/js/jquery.min.js"></script>
         <script src="/lib/marked.min.js"></script>
         <script src="/lib/prettify.min.js"></script>
         <script src="/lib/raphael.min.js"></script>
@@ -68,8 +81,17 @@
         <script src="/lib/sequence-diagram.min.js"></script>
         <script src="/lib/flowchart.min.js"></script>
         <script src="/lib/jquery.flowchart.min.js"></script>
-	<script type="text/javascript" src="/js/editormd.js"></script>
-    <script type="text/javascript">
+	<script type="text/javascript" src="/js/editormd.js"></script> -->
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/editormd.min.js"></script>
+	<script src="/lib/marked.min.js"></script>
+	<script src="/lib/prettify.min.js"></script>
+	<script src="/lib/raphael.min.js"></script>
+	<script src="/lib/underscore.min.js"></script>
+	<script src="/lib/sequence-diagram.min.js"></script>
+	<script src="/lib/flowchart.min.js"></script>
+	<script src="/lib/jquery.flowchart.min.js"></script>
+	<script type="text/javascript">
     $(function() {
         var testEditormdView2;
 		    
@@ -83,6 +105,71 @@
         })
         });
 </script>
-<script src="/js/autoload.js"></script>
+	<script type="text/javascript">
+			var testEditor;
+		    $(function() {
+		        testEditor = editormd("commentText", {
+		            width   : "90%",
+		            height  : 640,
+		            syncScrolling : "single",
+		            path    : "/lib/",
+		            saveHTMLToTextarea: true,
+		            autoFocus:false,
+		            codeFold : true,
+                    emoji : true,
+                    taskList : true,
+                    searchReplace : true,
+                    tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+                    flowChart : true,             // 开启流程图支持，默认关闭
+                    sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+                    saveHTMLToTextarea: true,
+                    imageUpload : true,
+                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : "/saveimg",
+                    toolbarIcons : function() {
+                        return ["undo", "redo", "|","bold", "italic","ucwords","uppercase","lowercase","|"
+                        	,"h1","h2","h3","h4","h5","h6","|","list-ul","list-ol","table","datetime","hr","|",
+                        	"link","reference-link","image","code","preformatted-text","code-block","emoji","html-entities","pagebreak","goto-line","|","watch", 
+                        	"fullscreen", "preview","help","info","|","releaseIcon"]
+                    },
+                    toolbarIconTexts : {
+                        releaseIcon : "<span class='button text-primary bg-light'>发布</span>"
+                    },
+
+                    /*给自定义按钮指定回调函数*/
+                    toolbarHandlers:{
+                        releaseIcon : function(cm, icon, cursor, selection) {
+                                contentCommit();
+                        }
+                    }
+                });
+            });
+		</script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		function contentCommit() {
+			var nickName = document.getElementById("usr");
+			var commentText = document.getElementById("comment");
+			var articleID =  /*[[${article.id}]]*/;
+			//articleID = "\""+articleID+"\"";
+		            $.ajax({
+		                type: "POST",//方法类型
+		                dataType: "json",//预期服务器返回的数据类型
+		                url: "/saveComment" ,//url
+		                data: {"nickName":nickName.value,"commentText":commentText.value,"articleID":articleID},
+		                success: function (result) {
+		                    console.log(result);//打印服务端返回的数据(调试用)
+		                    if (result) {
+		                        alert("SUCCESS");
+		                    };
+		                },
+		                error : function() {
+		                    alert("异常！");
+		                }
+		            });
+		        }
+		/*]]>*/
+		</script>
+	<script src="/js/autoload.js"></script>
 </body>
 </html>

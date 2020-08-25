@@ -8,11 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +30,8 @@ public class EditController {
 			int num = articleService.saveArtical(title, introduce, content);
 			if(num > 0) {
 				Success = true;
+			}else {
+				Success = false;
 			}
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -40,11 +40,18 @@ public class EditController {
 		return Success;
 	}
 	
+	public boolean SaveCommentText() {
+		
+		return Success;
+	}
+	
 	@PostMapping("/saveimg")
 	@ResponseBody
 	public Map< String, Object> getImage(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file, HttpServletRequest request,HttpServletResponse response,MultipartFile attach)
 	{
 		String rootPath = request.getSession().getServletContext().getRealPath("/static/img");
+		//String rootPath = "/usr/local/tmp/image/image/";
+		System.out.println(rootPath);
 		File filePath = new File(rootPath);
         if (!filePath.exists()) {
             filePath.mkdirs();

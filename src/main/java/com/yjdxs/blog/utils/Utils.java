@@ -15,7 +15,7 @@ public class Utils {
 	 * @return
 	 */
 	public static String GetUUID() {
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().replace("-", "");
 	}
 	/***
 	 * 返回当前的时间

@@ -257,6 +257,7 @@ function loadWidget(config) {
 }
 
 function initWidget(config, apiPath) {
+	if (screen.width <= 768) return;
 	if (typeof config === "string") {
 		config = {
 			waifuPath: config,
