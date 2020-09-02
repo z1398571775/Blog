@@ -17,5 +17,4 @@ public class CommentController {
 	{
 		return commentService.saveComment(nickName, commentText, articleID);
 	}
-
 }

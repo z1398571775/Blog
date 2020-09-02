@@ -12,6 +12,7 @@ import com.yjdxs.blog.service.CommentService;
 import com.yjdxs.blog.utils.Utils;
 @Service
 public class CommentServiceimpl implements CommentService{
+	int showNum = 5;//显示几条数据
 @Autowired
 	private CommentMapper commentMapper;
 	@Override
@@ -22,9 +23,18 @@ public class CommentServiceimpl implements CommentService{
 	}
 
 	@Override
-	public List<Comment> getAllComment() {
+	public List<Comment> getComment(int currentNum,String articleID) {
 		// TODO Auto-generated method stub
-		return null;
+		int preNum = (currentNum-1)*showNum;
+		int lastNum = currentNum*showNum;
+		return commentMapper.SelectComment(preNum, lastNum,articleID);
+	}
+
+	@Override
+	public int getAllComment(String articleID) {
+		// TODO Auto-generated method stub
+		int pageCount = Integer.valueOf(commentMapper.SelectAllComment(articleID));
+		return (pageCount % showNum == 0 ? pageCount / showNum : pageCount / showNum + 1);
 	}
 	
 }

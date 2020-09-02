@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.yjdxs.blog.entity.Article;
 import com.yjdxs.blog.service.ArticalService;
+import com.yjdxs.blog.service.CommentService;
 import com.yjdxs.blog.serviceimpl.ArticleServiceimpl;
 
 @Controller
@@ -22,6 +23,8 @@ public class TurnController {
 	
 	@Autowired 
 	ArticalService articleService;
+	@Autowired
+	CommentService commentService;
 	@RequestMapping("/")
 	public String turnindex(Model model) {
 		//ArticalService articleService = new ArticleServiceimpl();
@@ -35,6 +38,8 @@ public class TurnController {
 		System.out.println(id);
 		Article article = articleService.getArticle(id);
 		model.addAttribute("article", article);
+		model.addAttribute("pageCount", commentService.getAllComment(id));
+		model.addAttribute("Comments", commentService.getComment(1, id));
 		return "content";
 	}
 }
