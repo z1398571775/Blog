@@ -50,7 +50,7 @@
 			</form>
 		</div>
 	</nav>
-	<div>
+	<div id="Allhtml">
 		<div class="container" style="width: 100%;">
 			<h3 align="center" th:text="${article.title}">这是一个文章题目</h3>
 			<div id="test-editormd-view2" class="bg-light ">
@@ -58,19 +58,24 @@
 					th:text="${article.content}">
                 </textarea>
 			</div>
-				<div class="card" th:if = "${pageCount} > 0" th:each="comment : ${Comments}">
-					<div class="card-header" th:text = "${comment.sickName}+说：">Quote</div>
-					<div class="card-body">
-						<blockquote class="blockquote mb-0">
-							<p th:text = "${comment.content}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Integer posuere erat a ante.</p>
-							<footer class="blockquote-footer">
-							<span th:text = "${comment.createTime}"></span>
-								Someone famous in <cite title="Source Title">Source Title</cite>
-							</footer>
-						</blockquote>
-					</div>
+			<div class="card" th:if="${pageCount} > 0"
+				th:each="comment : ${Comments}" th:fragment="commentFragment">
+				<div class="card-header" th:text="${comment.sickName}+说：">Quote</div>
+				<div class="card-body Markdown" th:id="${comment.id}">
+					<textarea name="text" style="display: none;"
+						th:text="${comment.content}"></textarea>
 				</div>
+			</div>
+			<nav id="Page" aria-label="Page navigation example" 0th:if="${pageCount} > 0">
+				<ul class="pagination">
+					<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="#">1</a></li>
+					<li class="page-item"><a class="page-link" href="#">2</a></li>
+					<li class="page-item"><a class="page-link" href="#">3</a></li>
+					<li class="page-item"><a class="page-link" href="#">Next</a></li>
+				</ul>
+			</nav>
+
 
 
 			<div class="border container" style="background-color: #f8f9fa;">
@@ -105,10 +110,10 @@
 	<script src="/lib/sequence-diagram.min.js"></script>
 	<script src="/lib/flowchart.min.js"></script>
 	<script src="/lib/jquery.flowchart.min.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" th:inline="javascript">
     $(function() {
         var testEditormdView2;
-		    
+        getMarkdown();
         testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
             htmlDecode      : "style,script,iframe",  // you can filter tags decode
             emoji           : true,
@@ -118,6 +123,31 @@
             sequenceDiagram : true,  // 默认不解析
         })
         });
+    function getMarkdown(){
+    	var Markdowns = document.querySelectorAll(".Markdown");
+    	var i,len,Markdown,id;
+    	for(i = 0,len = Markdowns.length;i < len;i++){
+    		Markdown = Markdowns.item(i);
+    		id = Markdown.id;
+    		var testEditormdView2 = editormd.markdownToHTML(id, {
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+            })
+    	}
+    };
+    <!--动态添加分页页数-->
+    function getCommentPage(){
+    	var insertHtmlText;
+    	var PageCount = [[${pageCount}]];
+    	for(var i = 0; i < PageCount;i++){
+    		insertHtmlText += 
+    	}
+    	document.querySelector("#Page").querySelector("li").insertAdjacentHTML("afterend",);
+    }
 </script>
 	<script type="text/javascript">
 			var testEditor;
@@ -164,8 +194,7 @@
 		function contentCommit() {
 			var nickName = document.getElementById("usr");
 			var commentText = document.getElementById("comment");
-			var articleID =  /*[[${article.id}]]*/;
-			//articleID = "\""+articleID+"\"";
+			var articleID =  [[${article.id}]];
 		            $.ajax({
 		                type: "POST",//方法类型
 		                dataType: "json",//预期服务器返回的数据类型
@@ -175,6 +204,11 @@
 		                    console.log(result);//打印服务端返回的数据(调试用)
 		                    if (result) {
 		                        alert("SUCCESS");
+		                        //重新刷新页面
+		                        /* $.post("/content",{
+		                        	"id":articleID
+		                        }); */
+		                        location.reload();
 		                    };
 		                },
 		                error : function() {
@@ -183,6 +217,9 @@
 		            });
 		        }
 		/*]]>*/
+		</script>
+	<script type="text/javascript">
+			var pageCount = [[${pageCount}]];
 		</script>
 	<script src="/js/autoload.js"></script>
 </body>

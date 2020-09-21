@@ -25,5 +25,13 @@ public class Utils {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		return df.format(new Date());
 	}
-
+	/***
+	 * 将当前的时间转化为字符串
+	 * @param date
+	 * @return
+	 */
+	public static String gryNowTime(Date date) {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		return df.format(date);
+	}
 }

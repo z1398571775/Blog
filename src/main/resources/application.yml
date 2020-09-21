@@ -12,6 +12,12 @@ spring:
       max-file-size: 10MB
       # 上传文件总的最大值
       max-request-size: 10MB
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+      
 mybatis:
   #mapper-locations: classpath:com/yjdxs/blog/mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.yjdxs.blog.entity  # 注意：对应实体类的路径
@@ -26,4 +32,5 @@ logging:
     level:
     #这个指定你的dao层，也就是mapper文件的所在包
       com.yjdxs.blog.mapper: DEBUG
+      
     

@@ -18,7 +18,7 @@ public interface CommentMapper {
 	 * @param lastNum
 	 * @return
 	 */
-	@Select("select * from comment where articleID = #{articleID} limit #{preNum},#{lastNum}")
+	@Select("select id,sickName,convert(content using utf8) content,createTime,articleID from comment where articleID = #{articleID} order by createTime desc limit #{preNum},#{lastNum} ")
 	List<Comment> SelectComment(int preNum,int lastNum,String articleID);
 	/**
 	 * 获取全部的评论

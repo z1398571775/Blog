@@ -32,13 +32,19 @@ public class TurnController {
 		model.addAttribute("articles", list);
 		return "index";
 	}
-	
-	@RequestMapping("/content")
+	/***
+	 * 传入文章的ID，根据文章的ID查找文章对应的评论
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/content",produces = "application/json;charset=utf-8")
 	public String turnShow(String id,Model model) {
 		System.out.println(id);
 		Article article = articleService.getArticle(id);
 		model.addAttribute("article", article);
-		model.addAttribute("pageCount", commentService.getAllComment(id));
+		model.addAttribute("pageCount", commentService.getPageCount(id));
+		model.addAttribute("currentPage", 1);
 		model.addAttribute("Comments", commentService.getComment(1, id));
 		return "content";
 	}

@@ -27,5 +27,5 @@ public interface CommentService {
 	 * @param articleID
 	 * @return
 	 */
-	int getAllComment(String articleID);
+	int getPageCount(String articleID);
 }

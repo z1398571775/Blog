@@ -17,7 +17,7 @@ public interface ArticleMapper {
 	@Insert("insert into article values(#{id},#{title},#{introduce},#{content},#{createtime},#{modifytime})")
 	int saveArticle(Article article);
 	
-	@Select("select * from article")
+	@Select("select * from article order by createtime desc")
 	List<Article> getAllArticleList();
 	
 	@Select("select * from article where id = #{id}")

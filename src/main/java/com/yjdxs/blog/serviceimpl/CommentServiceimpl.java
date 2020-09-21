@@ -31,7 +31,7 @@ public class CommentServiceimpl implements CommentService{
 	}
 
 	@Override
-	public int getAllComment(String articleID) {
+	public int getPageCount(String articleID) {
 		// TODO Auto-generated method stub
 		int pageCount = Integer.valueOf(commentMapper.SelectAllComment(articleID));
 		return (pageCount % showNum == 0 ? pageCount / showNum : pageCount / showNum + 1);
