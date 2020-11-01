@@ -26,8 +26,8 @@ public class CommentServiceimpl implements CommentService{
 	public List<Comment> getComment(int currentNum,String articleID) {
 		// TODO Auto-generated method stub
 		int preNum = (currentNum-1)*showNum;
-		int lastNum = currentNum*showNum;
-		return commentMapper.SelectComment(preNum, lastNum,articleID);
+		//int lastNum = currentNum*showNum;
+		return commentMapper.SelectComment(preNum, showNum,articleID);
 	}
 
 	@Override

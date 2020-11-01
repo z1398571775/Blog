@@ -58,21 +58,24 @@
 					th:text="${article.content}">
                 </textarea>
 			</div>
-			<div class="card" th:if="${pageCount} > 0"
-				th:each="comment : ${Comments}" th:fragment="commentFragment">
-				<div class="card-header" th:text="${comment.sickName}+说：">Quote</div>
-				<div class="card-body Markdown" th:id="${comment.id}">
-					<textarea name="text" style="display: none;"
-						th:text="${comment.content}"></textarea>
+			<div id="div1" th:fragment="commentFragment">
+				<div class="card" th:if="${pageCount} > 0" id="commentDiv"
+					th:each="comment : ${Comments}">
+					<div class="card-header" th:text="${comment.sickName}+说：">Quote</div>
+					<div class="card-body Markdown" th:id="${comment.id}">
+						<textarea name="text" style="display: none;"
+							th:text="${comment.content}"></textarea>
+					</div>
 				</div>
 			</div>
-			<nav id="Page" aria-label="Page navigation example" 0th:if="${pageCount} > 0">
+			<nav id="Page" aria-label="Page navigation example"
+				th:if="${pageCount} > 0">
 				<ul class="pagination">
-					<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">Next</a></li>
+					<li class="page-item" th:if="${currentPage} == 1"><a
+						class="page-link" href="javascript:void(0);">Previous</a></li>
+					<li class="page-item" th:if="${currentPage} == ${pageCount}">
+						<a class="page-link" href="#">Next</a>
+					</li>
 				</ul>
 			</nav>
 
@@ -112,7 +115,11 @@
 	<script src="/lib/jquery.flowchart.min.js"></script>
 	<script type="text/javascript" th:inline="javascript">
     $(function() {
-        var testEditormdView2;
+    	initMarkdown();
+    	getCommentPage();
+        });
+    function initMarkdown(){
+    	var testEditormdView2;
         getMarkdown();
         testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
             htmlDecode      : "style,script,iframe",  // you can filter tags decode
@@ -122,7 +129,7 @@
             flowChart       : true,  // 默认不解析
             sequenceDiagram : true,  // 默认不解析
         })
-        });
+    }
     function getMarkdown(){
     	var Markdowns = document.querySelectorAll(".Markdown");
     	var i,len,Markdown,id;
@@ -144,12 +151,9 @@
     	var insertHtmlText;
     	var PageCount = [[${pageCount}]];
     	for(var i = 0; i < PageCount;i++){
-    		insertHtmlText += 
+    		document.querySelector("#Page").querySelector("ul").lastElementChild.insertAdjacentHTML("beforebegin","<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:void(0);\" onclick=\"Turnpage(\'else\',this)\">"+(i+1)+"</a></li>");
     	}
-    	document.querySelector("#Page").querySelector("li").insertAdjacentHTML("afterend",);
-    }
-</script>
-	<script type="text/javascript">
+    };
 			var testEditor;
 		    $(function() {
 		        testEditor = editormd("commentText", {
@@ -188,13 +192,11 @@
                     }
                 });
             });
-		</script>
-	<script th:inline="javascript">
 	/*<![CDATA[*/
+		var articleID =  [[${article.id}]];
 		function contentCommit() {
 			var nickName = document.getElementById("usr");
 			var commentText = document.getElementById("comment");
-			var articleID =  [[${article.id}]];
 		            $.ajax({
 		                type: "POST",//方法类型
 		                dataType: "json",//预期服务器返回的数据类型
@@ -205,9 +207,9 @@
 		                    if (result) {
 		                        alert("SUCCESS");
 		                        //重新刷新页面
-		                        /* $.post("/content",{
+		                        /*  $.post("/content",{
 		                        	"id":articleID
-		                        }); */
+		                        });  */
 		                        location.reload();
 		                    };
 		                },
@@ -217,9 +219,42 @@
 		            });
 		        }
 		/*]]>*/
-		</script>
-	<script type="text/javascript">
 			var pageCount = [[${pageCount}]];
+			//获取当前的页数
+			var currentPage = [[${currentPage}]];
+			function Turnpage(getTurn,lis){
+				console.log("1");
+				if(getTurn == "pre"){
+					currentPage -= 1;
+				}else if(getTurn == "next"){
+					currentPage += 1;
+				}else{
+					currentPage = lis.firstChild.nodeValue;
+				}
+				console.log("2");
+				$.ajax({
+                type: "POST",//方法类型
+                //dataType: "json",//预期服务器返回的数据类型
+                url: "/updateComment" ,//url
+                data: {"CurrentPage":currentPage,"articleID":articleID},
+                success: function (data){
+                	console.log(data);
+                	$('#div1').html(data);
+                	initMarkdown();
+                	/* if(result){
+                		alert("Success");
+                    	location.reload();
+                	} */
+                },
+                error : function(XmlHttpRequest,textStatus, errorThrown) {
+                	alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                    alert("异常！"+XmlHttpRequest.responseText);
+                }
+				});
+				console.log("3");
+			};
 		</script>
 	<script src="/js/autoload.js"></script>
 </body>
