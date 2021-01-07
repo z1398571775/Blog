@@ -1,19 +1,14 @@
 package com.yjdxs.blog.controller;
 
 import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.yjdxs.blog.entity.Article;
 import com.yjdxs.blog.service.ArticalService;
 import com.yjdxs.blog.service.CommentService;
-import com.yjdxs.blog.serviceimpl.ArticleServiceimpl;
+import com.yjdxs.blog.service.VedioService;
 
 @Controller
 public class TurnController {
@@ -26,6 +21,8 @@ public class TurnController {
 	ArticalService articleService;
 	@Autowired
 	CommentService commentService;
+	@Autowired 
+	VedioService vedioService;
 	@RequestMapping("/")
 	public String turnindex(Model model) {
 		//ArticalService articleService = new ArticleServiceimpl();
@@ -48,5 +45,12 @@ public class TurnController {
 		model.addAttribute("currentPage", 1);
 		model.addAttribute("Comments", commentService.getComment(1, id));
 		return "content";
+	}
+	
+	@RequestMapping("/video")
+	public String turnvedio(String url, Model model) {
+		List<String> list = vedioService.getHttp(url);
+		model.addAttribute("videoList", list);
+		return "video";
 	}
 }

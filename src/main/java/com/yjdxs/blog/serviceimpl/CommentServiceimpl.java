@@ -18,7 +18,7 @@ public class CommentServiceimpl implements CommentService{
 	@Override
 	public boolean saveComment(String NickName, String content, String articleID) {
 		// TODO Auto-generated method stub
-		Comment comment = new Comment(Utils.GetUUID(), NickName, content, Utils.gryNowTime(), articleID);
+		Comment comment = new Comment(Utils.GetUUID(), NickName, content, Utils.getNowTime(), articleID);
 		return commentMapper.InsertComment(comment) > 0 ;
 	}
 

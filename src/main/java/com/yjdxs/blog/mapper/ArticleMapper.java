@@ -22,4 +22,7 @@ public interface ArticleMapper {
 	
 	@Select("select * from article where id = #{id}")
 	Article getArticle(String id);
+	
+	@Insert("insert images values (#{imageName},#{image},#{createTime})")
+	void saveImage(String imageName,byte[] image,String createTime);
 }

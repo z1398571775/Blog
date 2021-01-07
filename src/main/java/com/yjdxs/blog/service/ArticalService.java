@@ -1,5 +1,6 @@
 package com.yjdxs.blog.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -11,4 +12,5 @@ public interface ArticalService {
 	int saveArtical(String title,String introduce,String content);
 	List<Article> getAllArticle();
 	Article getArticle(String id);
+	void saveImage(File file);
 }

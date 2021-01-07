@@ -21,7 +21,7 @@ public class Utils {
 	 * 返回当前的时间
 	 * @return
 	 */
-	public static String gryNowTime() {
+	public static String getNowTime() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		return df.format(new Date());
 	}

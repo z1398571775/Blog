@@ -49,8 +49,7 @@ public class EditController {
 	@ResponseBody
 	public Map< String, Object> getImage(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file, HttpServletRequest request,HttpServletResponse response,MultipartFile attach)
 	{
-		String rootPath = request.getSession().getServletContext().getRealPath("/static/img");
-		//String rootPath = "/usr/local/tmp/image/image/";
+		String rootPath = request.getSession().getServletContext().getRealPath("/image");
 		System.out.println(rootPath);
 		File filePath = new File(rootPath);
         if (!filePath.exists()) {
@@ -60,8 +59,11 @@ public class EditController {
         String suffix = trueFileName.substring(trueFileName.lastIndexOf("."));
         String fileName = Utils.GetUUID()+suffix;
         File targetFile = new File(rootPath, fileName);
+        
+        System.out.println("图片的路径："+targetFile.getPath());
         try {
 			file.transferTo(targetFile);
+			articleService.saveImage(targetFile);
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
